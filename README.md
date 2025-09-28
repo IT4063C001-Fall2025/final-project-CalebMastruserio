@@ -1,5 +1,5 @@
 # Final-Project-Template
-<!-- Edit the title above with your project title -->
+Right to Repair Movement Analysis
 
 ## Project Overview
 
