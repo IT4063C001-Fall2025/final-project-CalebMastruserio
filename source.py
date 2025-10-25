@@ -270,7 +270,12 @@ plt.show()
 # 
 # I did not recieve too much feedback from my peers, I just spent this time on refining my data cleansing, and making sure that my datasets were ready for analysis and practicing how I can use the data to make visualizations to support my findings on my project question. 
 
-# In[1]:
+# Machine Learning Plan
+# I plan on using supervised learning, specifically regression models to predict repair costs based on factors like car model, part type, and year. Some potential issues I might encounter are limited and incomplete data. I have already seen this in trying to find good data sets to use for my analysis. As well as inconsistent prices across shops, which pose the risk of model accuracy. Some challenges have already began to surface, such as cleaning and standardizing the data. This is something I am still trying to learn as we go, so its given me some trouble. Finally, handling any outliers, and ensuring the model generalizes well to different parts and types of cars will be a fun feat to tackle. 
+# 
+# 
+
+# In[17]:
 
 
 # ⚠️ Make sure you run this cell at the end of your notebook before every submission!
