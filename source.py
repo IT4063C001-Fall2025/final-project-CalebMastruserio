@@ -263,7 +263,7 @@ plt.show()
 # See above the code I used to detect for any missing, dupelicates, outliers, and data types for transformations. I started by cleaning up the data by converting non-numeric values to NAN, dropping any uncecessary columns, transforming price columns to numeric types, creating an average price column, and keeping high cost outliers because they were relevant to showing how the more modern build a vehicle is has a strong positive correllation to increased part and labor bills. 
 # 
 
-# ## 3. Prior Feedback and Updates
+# ## 3. Prior Feedback and Updates & Machine Learning 
 # What feedback did you receive from your peers and/or the teaching team?
 # 
 # What changes have you made to your project based on this feedback?
@@ -275,7 +275,240 @@ plt.show()
 # 
 # 
 
-# In[17]:
+# ### Machine Learning Model Implementation
+
+# 
+
+# In[8]:
+
+
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import OneHotEncoder
+from sklearn.compose import ColumnTransformer
+from sklearn.linear_model import LinearRegression
+from sklearn.pipeline import Pipeline
+
+# Features and target
+X = ml_data[['car', 'model', 'body_part']]
+y = ml_data['avg_price']
+
+# Categorical columns
+cat_cols = ['car', 'model', 'body_part']
+
+# Preprocessing: convert text → numeric
+preprocess = ColumnTransformer(
+    transformers=[
+        ('cat', OneHotEncoder(handle_unknown='ignore'), cat_cols)
+    ]
+)
+
+# Build pipeline
+model = Pipeline([
+    ('prep', preprocess),
+    ('reg', LinearRegression())
+])
+
+# Train/test split
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+# Train model
+model.fit(X_train, y_train)
+
+print("Model trained successfully!")
+
+
+# In[10]:
+
+
+from sklearn.metrics import mean_squared_error
+import numpy as np
+
+y_pred = model.predict(X_test)
+mse = mean_squared_error(y_test, y_pred)
+rmse = np.sqrt(mse)
+
+print("RMSE:", rmse)
+
+
+# In[11]:
+
+
+def predict_repair_cost(car, model_name, body_part):
+    new_data = pd.DataFrame({
+        'car': [car],
+        'model': [model_name],
+        'body_part': [body_part]
+    })
+
+    prediction = model.predict(new_data)[0]
+    return round(prediction, 2)
+
+# Example:
+print(predict_repair_cost("Toyota", "Corolla", "Front Bumper"))
+
+
+# In[16]:
+
+
+import seaborn as sns
+
+pred_df = X_test.copy()
+pred_df['y_pred'] = y_pred
+
+plt.figure(figsize=(12,6))
+sns.boxplot(x='body_part', y='y_pred', data=pred_df)
+plt.xticks(rotation=45)
+plt.xlabel("Car Part")
+plt.ylabel("Predicted Repair Cost")
+plt.title("Predicted Repair Costs by Car Part")
+plt.show()
+
+
+# In[26]:
+
+
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+from sklearn.linear_model import LinearRegression
+from mpl_toolkits.mplot3d import Axes3D
+
+data = pd.read_csv("C:/Users/kid0001/Documents/University of Cincinnati/Fall Semester 2025/DATA TECH ANALYTICS/Final Project Stuff/CPE.csv", encoding='latin1')
+
+data = data.replace({'null': None})
+for col in ['shop1 (eqbal)', 'shop2(haraj)', 'shop3 ']:
+    data[col] = pd.to_numeric(data[col], errors='coerce')
+
+data = data.dropna(subset=['shop1 (eqbal)', 'shop2(haraj)', 'shop3 '])
+
+X = data[['shop1 (eqbal)', 'shop2(haraj)']]
+y = data['shop3 ']
+
+model = LinearRegression()
+model.fit(X, y)
+
+shop1_range = np.linspace(X['shop1 (eqbal)'].min(), X['shop1 (eqbal)'].max(), 20)
+shop2_range = np.linspace(X['shop2(haraj)'].min(), X['shop2(haraj)'].max(), 20)
+shop1_grid, shop2_grid = np.meshgrid(shop1_range, shop2_range)
+shop3_pred = model.predict(np.c_[shop1_grid.ravel(), shop2_grid.ravel()]).reshape(shop1_grid.shape)
+
+fig = plt.figure(figsize=(10,7))
+ax = fig.add_subplot(111, projection='3d')
+
+ax.scatter(X['shop1 (eqbal)'], X['shop2(haraj)'], y, color='blue', label='Actual')
+
+ax.plot_surface(shop1_grid, shop2_grid, shop3_pred, color='orange', alpha=0.5, label='Regression Plane')
+
+ax.set_xlabel('shop1 (eqbal)')
+ax.set_ylabel('shop2(haraj)')
+ax.set_zlabel('shop3')
+ax.set_title('3D Regression Plane')
+plt.show()
+
+
+# The regression model supports my claim about the Right to Repair Movement by demonstrating that data from independent shops can predict repair outcomes at other shops. This suggests that knowledge about vehicle repairs is not exclusive to dealerships and specialized diagnostic tools. The model shows that patterns in repair costs and processes exist outside manufacturer-controlled systems, meaning independent mechanics and DIYers could feasibly perform repairs if they had access to the right information. This aligns with the Right to Repair philosophy, highlighting that barriers preventing independent repairs are not absolute and can be challenged with accessible data.
+
+# ## Data Splitting
+
+# In[ ]:
+
+
+# Here I list the numeric columns and convert any to numeric if they are not already, for data cleaning. 
+numeric_cols = ['shop1 (eqbal)', 'shop2(haraj)', 'shop3 ']
+
+for col in numeric_cols:
+    data[col] = pd.to_numeric(data[col], errors='coerce')
+
+
+
+# In[ ]:
+
+
+# Here we can predict one shop's cost from another. This is used to show common trends and accurately see the overall similarities in cost for the different components.
+X = data[['shop1 (eqbal)', 'shop2(haraj)']]
+
+y = data['shop3 ']
+
+
+# In[ ]:
+
+
+# Here we are using a split to separate into training data to evaluate how well it generalizes. 
+from sklearn.model_selection import train_test_split
+
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.2, random_state=42
+)
+
+
+# In[ ]:
+
+
+# This step we are going to drop any rows and/or features where the target is NaN, then we split and target again. 
+clean_data = data.dropna(subset=['shop1 (eqbal)', 'shop2(haraj)', 'shop3 '])
+
+X = clean_data[['shop1 (eqbal)', 'shop2(haraj)']]
+y = clean_data['shop3 ']
+
+from sklearn.model_selection import train_test_split
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.2, random_state=42
+)
+
+
+# In[ ]:
+
+
+# Now we are loading another CSV for data cleaning and separation. Following similar steps as shown from above. 
+
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LinearRegression
+from sklearn.impute import SimpleImputer
+
+data = pd.read_csv(
+    "C:/Users/kid0001/Documents/University of Cincinnati/Fall Semester 2025/DATA TECH ANALYTICS/Final Project Stuff/CPE.csv",
+    encoding='latin1' 
+)
+
+numeric_cols = ['shop1 (eqbal)', 'shop2(haraj)', 'shop3 ']
+for col in numeric_cols:
+    data[col] = pd.to_numeric(data[col], errors='coerce')
+
+X = data[['shop1 (eqbal)', 'shop2(haraj)']]
+y = data['shop3 ']
+
+imputer = SimpleImputer(strategy='mean')
+X_imputed = imputer.fit_transform(X)
+y_imputed = y.fillna(y.mean())
+
+
+
+# In[ ]:
+
+
+X_train, X_test, y_train, y_test = train_test_split(
+    X_imputed, y_imputed, test_size=0.2, random_state=42
+)
+
+
+# In[ ]:
+
+
+model = LinearRegression()
+model.fit(X_train, y_train) 
+
+
+
+# In[ ]:
+
+
+# This step we can use our test data to predict costs for shop3. 
+y_pred = model.predict(X_test)
+print(y_pred[:5]) 
+
+
+# In[1]:
 
 
 # ⚠️ Make sure you run this cell at the end of your notebook before every submission!
