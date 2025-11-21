@@ -277,60 +277,40 @@ plt.show()
 
 # ### Machine Learning Model Implementation
 
-# 
-
-# In[8]:
+# In[ ]:
 
 
+#Pipeline and Training/Data Splitting
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import OneHotEncoder
 from sklearn.compose import ColumnTransformer
 from sklearn.linear_model import LinearRegression
 from sklearn.pipeline import Pipeline
 
-# Features and target
 X = ml_data[['car', 'model', 'body_part']]
 y = ml_data['avg_price']
 
-# Categorical columns
 cat_cols = ['car', 'model', 'body_part']
 
-# Preprocessing: convert text → numeric
 preprocess = ColumnTransformer(
     transformers=[
         ('cat', OneHotEncoder(handle_unknown='ignore'), cat_cols)
     ]
 )
 
-# Build pipeline
 model = Pipeline([
     ('prep', preprocess),
     ('reg', LinearRegression())
 ])
 
-# Train/test split
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
-# Train model
 model.fit(X_train, y_train)
 
 print("Model trained successfully!")
 
 
-# In[10]:
-
-
-from sklearn.metrics import mean_squared_error
-import numpy as np
-
-y_pred = model.predict(X_test)
-mse = mean_squared_error(y_test, y_pred)
-rmse = np.sqrt(mse)
-
-print("RMSE:", rmse)
-
-
-# In[11]:
+# In[ ]:
 
 
 def predict_repair_cost(car, model_name, body_part):
@@ -343,7 +323,7 @@ def predict_repair_cost(car, model_name, body_part):
     prediction = model.predict(new_data)[0]
     return round(prediction, 2)
 
-# Example:
+# Example
 print(predict_repair_cost("Toyota", "Corolla", "Front Bumper"))
 
 
@@ -508,7 +488,7 @@ y_pred = model.predict(X_test)
 print(y_pred[:5]) 
 
 
-# In[1]:
+# In[44]:
 
 
 # ⚠️ Make sure you run this cell at the end of your notebook before every submission!
