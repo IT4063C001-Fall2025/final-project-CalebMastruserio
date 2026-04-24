@@ -109,6 +109,6 @@ pip install pandas numpy matplotlib seaborn scikit-learn
 -Data suggests repairs do not require exclusive dealership access
 
 
-Conclusion
+## Conclusion
 
 The analysis supports the idea that rising repair costs are driven not only by inflation but by increased technological complexity and restricted access to repair tools. The Right to Repair Movement can help reduce these costs by enabling greater access to repair data and tools for independent mechanics and consumers.
