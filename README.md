@@ -50,6 +50,8 @@ Final-Project-CALEBMASTRUSERIO/
    https://www.kaggle.com/datasets/shorooq77/car-parts-price-estimation  
 
 
+
+
 ## How to Run the Project
 
 ### 1. Install Required Libraries
@@ -61,7 +63,9 @@ pip install pandas numpy matplotlib seaborn scikit-learn
 ### 3. Notebook is ready to be ran
 
 
-Data Cleaning Steps
+
+
+## Data Cleaning Steps
 
 -Removed duplicate records
 
@@ -72,7 +76,7 @@ Data Cleaning Steps
 -Standardized column names for consistency
 
 
-Key Visualizations
+## Key Visualizations
 
 -Histogram of repair cost distribution
 
@@ -83,7 +87,7 @@ Key Visualizations
 -Line chart comparing shop pricing differences
 
 
-Machine Learning Approach
+## Machine Learning Approach
 
 -Used Linear Regression to predict repair costs
 
@@ -94,7 +98,7 @@ Machine Learning Approach
 -Evaluated model predictions on unseen data
 
 
-Key Findings
+## Key Findings
 
 -Repair costs have increased significantly over time
 
