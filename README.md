@@ -56,9 +56,9 @@ Final-Project-CALEBMASTRUSERIO/
 
 pip install pandas numpy matplotlib seaborn scikit-learn
 
-2. All of the data files are included
+### 2. All of the data files are included
 
-3. Notebook is ready to be ran
+### 3. Notebook is ready to be ran
 
 
 Data Cleaning Steps
