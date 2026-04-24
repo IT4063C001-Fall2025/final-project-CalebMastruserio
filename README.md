@@ -34,7 +34,6 @@ Final-Project-CALEBMASTRUSERIO/
 │ └── banner.jpeg
 
 
----
 
 ## Data Sources
 
@@ -50,12 +49,11 @@ Final-Project-CALEBMASTRUSERIO/
    Provides part-level pricing across different repair shops  
    https://www.kaggle.com/datasets/shorooq77/car-parts-price-estimation  
 
----
 
 ## How to Run the Project
 
 ### 1. Install Required Libraries
-```bash
+
 pip install pandas numpy matplotlib seaborn scikit-learn
 
 2. All of the data files are included
