@@ -62,24 +62,28 @@ pip install pandas numpy matplotlib seaborn scikit-learn
 
 
 Data Cleaning Steps
+
 Removed duplicate records
 Handled missing values using removal or imputation
 Converted price columns from strings to numeric values
 Standardized column names for consistency
 
 Key Visualizations
+
 Histogram of repair cost distribution
 Boxplot to identify outliers
 Bar chart of average part prices across shops
 Line chart comparing shop pricing differences
 
 Machine Learning Approach
+
 Used Linear Regression to predict repair costs
 Applied One-Hot Encoding for categorical variables
 Split data into training and testing sets (80/20)
 Evaluated model predictions on unseen data
 
 Key Findings
+
 Repair costs have increased significantly over time
 Newer vehicles are more expensive to repair due to software complexity
 Independent shop pricing shows consistent and predictable patterns
