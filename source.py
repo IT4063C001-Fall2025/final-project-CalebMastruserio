@@ -451,6 +451,6 @@ print(y_pred[:5])
 # In[1]:
 
 
-# ⚠️ Make sure you run this cell at the end of your notebook before every submission!
+# Convert to .py for ease of file submission
 get_ipython().system('jupyter nbconvert --to python source.ipynb')
 
